@@ -169,6 +169,7 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
+	libusb_set_auto_detach_kernel_driver(handle, 1);
 	rc = libusb_claim_interface(handle, 0);
 	if(rc) {
 		fprintf(stderr, "Error claiming interface: %s\n", libusb_error_name(rc));
