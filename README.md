@@ -36,6 +36,12 @@ Once the first boot method fails, USB download mode can be accessed by pressing 
 	output_file: file to write data returned by payload (exploit mode only)
 ```
 
+## Building on Linux
+The makefile appears to be broken on certain Linux distros, this is the manual command.  
+```
+gcc exynos-usbdl.c -o exynos-usbdl -lusb -lusb-1.0
+```
+
 ## Payloads
 Payloads are raw binary AArch64 executables. Some are provided in directory **payloads/**.
 
