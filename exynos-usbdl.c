@@ -25,15 +25,6 @@ static char *target_names[] = {
 	"Exynos8890",//TARGET_8890
 	"Exynos8895",//TARGET_8895
 };
-enum {
-	XFER_BUFFER = 0,//address of buffer where payload is written
-	RA_PTR,//pointer to return address in stack we want to replace
-};
-static uint32_t targets[][2] = {
-	//XFER_BUFFER,	RA_PTR
-	{0x02021800,	0x02020F08},//TARGET_8890
-	{0x02021800,	0x02020F18},//TARGET_8895
-};
 
 libusb_device_handle *handle = NULL;
 
