@@ -10,8 +10,8 @@
 #include "libusb-1.0/libusb.h"
 
 #define DEBUG	1
-#define VENDOR_ID	0x04e8
-#define PRODUCT_ID	0x1234
+#define VENDOR_ID	0x18d1
+#define PRODUCT_ID	0x4f00
 #define BLOCK_SIZE		512
 #define CHUNK_SIZE	(uint32_t)0xfffe00
 
