@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
 	}
 
 	#if DEBUG
-	libusb_set_debug(ctx, LIBUSB_LOG_LEVEL_DEBUG);
+	libusb_set_option(ctx, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_DEBUG);
 	#endif
 
 	handle = libusb_open_device_with_vid_pid(NULL, VENDOR_ID, PRODUCT_ID);
