@@ -21,11 +21,6 @@
 #define dprint(args...)
 #endif
 
-static char *target_names[] = {
-	"Exynos8890",//TARGET_8890
-	"Exynos8895",//TARGET_8895
-};
-
 libusb_device_handle *handle = NULL;
 
 #define MAX_PAYLOAD_SIZE	(BLOCK_SIZE - 10)
@@ -57,61 +52,6 @@ static int send(dldata_t *payload) {
 	return rc;
 }
 
-static int identify_target()
-{
-	struct libusb_device_descriptor desc;
-	int rc, i;
-	unsigned char product[256];
-
-	if(!handle)
-		return -1;
-
-	rc = libusb_get_device_descriptor(libusb_get_device(handle), &desc);
-	if (LIBUSB_SUCCESS != rc) {
-		fprintf(stderr, "Error getting device descriptor\n");
-		return -1;
-	}
-
-	printf("Device detected: %04x:%04x\n", desc.idVendor, desc.idProduct);
-
-	if (desc.iProduct) {
-		rc = libusb_get_string_descriptor_ascii(handle, desc.iProduct, product, sizeof(product));
-		if (rc > 0){
-			for(i = 0; i < sizeof(target_names)/sizeof(target_names[0]); i++){
-				if(!strcmp(target_names[i], (char *)product)){
-					printf("Target: %s\n", target_names[i]);
-					return i;
-				}
-			}
-		}
-	}
-
-	return -1;
-}
-
-static int save_received_data(const char *filename){
-	FILE *fd;
-	int transferred = 0;
-	int total_transferred = 0;
-	uint8_t buf[BLOCK_SIZE];
-
-	fd = fopen(filename,"wb");
-	if (fd == NULL) {
-		fprintf(stderr, "Error: Can't open output file!\n");
-		return -1;
-	}
-
-	do {
-		libusb_bulk_transfer(handle, LIBUSB_ENDPOINT_IN | 1, buf, sizeof(buf), &transferred, 10);// no error handling because device-side is a mess anyway
-		fwrite(buf, 1, transferred, fd);
-		total_transferred += transferred;
-	} while(transferred);
-
-	fclose(fd);
-
-	return total_transferred;
-}
-
 int main(int argc, char *argv[])
 {
 	libusb_context *ctx;
@@ -126,7 +66,6 @@ int main(int argc, char *argv[])
 		printf("Usage: %s <input_file> [<output_file>]\n", argv[0]);
 		printf("\tmode: mode of operation\n");
 		printf("\tinput_file: payload binary to load and execute\n");
-		printf("\toutput_file: file to write data returned by payload (exploit mode only)\n");
 		return EXIT_SUCCESS;
 	}
 
