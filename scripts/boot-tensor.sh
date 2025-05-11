@@ -13,4 +13,3 @@ sleep 3
 ./exynos-usbdl radio.img
 ./exynos-usbdl gsa.ing
 ./exynos-usbdl pbl.ing
-./exynos-usbdl abl.img
